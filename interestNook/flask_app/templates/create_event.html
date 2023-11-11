@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono&display=swap" rel="stylesheet">
+    <title>Add Event</title>
+</head>
+<style>
+    #intro {
+        background-image: url(https://images.pexels.com/photos/274192/pexels-photo-274192.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2);
+        height: 100vh;
+    }
+    body {
+        font-family: 'Noto Sans Mono', monospace;
+    }
+</style>
+<body>
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand">InterestNook</a>
+        <form class="form-inline my-2 my-lg-0">
+            <a href="/dash" class="btn btn-outline-warning mr-3">Dashboard</a>
+            <a href="/logout" class="btn btn-outline-danger my-2 my-sm-0">Logout</a>
+        </form>
+    </nav>
+    <div id="intro" class="bg-image shadow-2-strong">
+        <div class="mask d-flex align-items-center h-100" style="background-color: rgba(0, 0, 0, 0.8);">
+            <div class="container">
+                <div>
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    {% for message in messages %}
+                    <p class="alert alert-danger card invalid-feedback mx-0 mb-0 p-1 text-center">{{message}}</p>
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+                </div>
+                <form action="/create/post" method="post"
+                    class="card col-5 mx-auto my-5 bg-light text-white p-3">
+                    <div class="form-group mb-3">
+                        <div class="col-xs-2">
+                            <label class="text-dark" for="name">Event Name:</label>
+                            <input type="text" class="form-control" id="event_name" name="name">
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="text-dark" for="description">Description:</label>
+                        <textarea class="form-control" rows="3" id="description" name="description"></textarea>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="text-dark" for="location">Location:</label>
+                        <input type="text" class="form-control" id="location" name="location">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="date_time" class="text-dark">Date and Time:</label>
+                        <input type="datetime-local" name="date_time" id="date_time" class="form-control" value = {{current_date}} required >
+                    </div>
+                    <div class="col-md-12 text-right">
+                        <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Add Event</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

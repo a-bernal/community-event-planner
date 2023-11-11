@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono&display=swap" rel="stylesheet">
+    <title>Comments</title>
+</head>
+<style>
+    #intro {
+        background-image: url(https://images.pexels.com/photos/4050468/pexels-photo-4050468.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2);
+        height: 100vh;
+    }
+    body {
+        font-family: 'Noto Sans Mono', monospace;
+    }
+</style>
+<body>
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand">InterestNook</a>
+        <form class="form-inline my-2 my-lg-0">
+            <a href="/dash" class="btn btn-outline-warning mr-3">Dashboard</a>
+            <a href="/clear" class="btn btn-outline-danger my-2 mr-3 my-sm-0">Logout</a>
+            <a href="/post/{{post.id}}" class="btn btn-outline-danger my-2 my-sm-0">Go Back</a>
+        </form>
+    </nav>
+    <div id="intro" class="bg-image shadow-2-strong">
+        <div class="mask d-flex align-items-center h-100" style="background-color: rgba(0, 0, 0, 0.8);">
+            <div class="container" style="width: 50%">
+                <div class="row justify-content-center">
+                    <div class="card bg-light mb-3" style="width: 100%;">
+                        <div class="card-header" style="font-size: 25px"><strong>{{post.event_name}}</strong></div>
+                            <div class = "card-body">
+                                <p>Description: {{post.description}}</p>
+                                <p>Location: {{post.location}}</p>
+                                <p>Date/Time: {{post.date_time}}</p>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class = "card br-light mb-3" style = "width: 100%;">
+                            <div class = "card-header" style="font-size: 20px;">Comments</div>
+                            {% for comment in post.comments %}
+                                <div class="card-body" style="border-bottom: solid 2px black">
+                                    <p style="border-bottom: solid 2px grey; font-size: 18px;">{{comment.creator.first_name}}</p>
+                                    <p style="font-size: 14px;">{{comment.content}}</p>
+                                    {% if session['user_id'] == comment.creator.id %}
+                                    <form action="/comment/{{post.id}}/delete/{{comment.id}}"><button class="btn btn-outline-danger my-2 my-sm-0">Delete</button></form>
+                                    {%endif%}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+            </div>
+        </div>
+</body>
+</html>

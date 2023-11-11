@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono&display=swap" rel="stylesheet">
+    <title>View Event</title>
+</head>
+<style>
+    #intro {
+        background-image: url(https://images.pexels.com/photos/4836371/pexels-photo-4836371.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2);
+        height: 100vh;
+    }
+    body {
+        font-family: 'Noto Sans Mono', monospace;
+    }
+</style>
+<body>
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand">InterestNook</a>
+        <form class="form-inline my-2 my-lg-0">
+            <a href="/dash" class="btn btn-outline-warning mr-3">Dashboard</a>
+            <a href="/clear" class="btn btn-outline-danger my-2 my-sm-0">Logout</a>
+        </form>
+    </nav>
+    <div id="intro" class="bg-image shadow-2-strong">
+        <div class="mask d-flex align-items-center h-100" style="background-color: rgba(0, 0, 0, 0.8);">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 mx-auto">
+                        <div class="card mx-auto text-center">
+                            <div class="card-body">
+                                <h4 class="card-title">{{post.event_name}}</h4>
+                                <h6 class="card-subtitle mb-2 text-muted">Hosted by: {{post.creator.first_name}}</h6>
+                                <p class="card-text">
+                                    <span class="font-weight-bold">Description:</span> {{post.description}}
+                                </p>
+                                <p class="card-text">
+                                    Date - {{ post.date_time.strftime('%m/%d/%Y') }}<br>
+                                    Time - {{ post.date_time.strftime('%H:%M %p') }}
+                                </p>
+                                <p id="address" class="card-text"><b>Location : </b> {{post.location}} </p>
+                                <p id="address" class="card-text"><b>Likes : </b> {{post.likes}} </p>
+                            </div>
+                        </div>
+                        <div class="text-center mt-3">
+                            <form action="/join/{{post.id}}" method="get">
+                                <button type="submit" class="btn btn-primary" name="rsvp">RSVP</button>
+                            </form>
+                        </div>
+                        <!-- <div class="text-center mt-3">
+                            {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                            <div class="alert alert-info">
+                                <ul class="list-unstyled">
+                                    {% for message in messages %}
+                                    <li>{{ message }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            {% endif %}
+                            {% endwith %}
+                        </div> -->
+                    </div>
+                </div>
+                <!-- Comments Section -->
+                <div class="row mt-5">
+                    <div class="col-md-6 mx-auto">
+                        <h4 class="text-white">Comments</h4>
+                        <h5><a href="/comments/{{post.id}}">See Comments</a></h5>
+                        {% for comment in post.comments %}
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <p class="card-text">{{ comment.user }}: {{ comment.text }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        
+                    </div>
+                </div>
+                <!-- User Comment Form -->
+                <div class="row mt-5">
+                    <div class="col-md-6 mx-auto">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Add a Comment</h5>
+                                <form action="/comment/{{post.id}}/submit" method="post">
+                                    <div class="form-group">
+                                        <label for="content">Your Comment</label>
+                                        <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Submit Comment</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

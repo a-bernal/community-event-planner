@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InterestNook</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="interest_Nook\flask_app\static\scss\_variables.scss">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono&display=swap" rel="stylesheet">
+</head>
+
+<style>
+    #intro {
+        background-image: url(https://images.pexels.com/photos/9543414/pexels-photo-9543414.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2);
+        background-size: cover;
+        background-position: center;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+    }
+
+    body {
+        font-family: 'Noto Sans Mono', monospace;
+    }
+
+    .card {
+        margin-bottom: 20px; /* You can adjust the value to control the spacing */
+    }
+</style>
+
+<body>
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand">InterestNook</a>
+        <h2>Welcome, {{user.first_name}}!!</h2>
+        <form class="form-inline my-2 my-lg-0">
+            <a href="/posts/new" class="btn btn-outline-success mr-3">Add Event</a>
+            <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search">
+            <a href="/clear" class="btn btn-outline-danger my-2 my-sm-0">Logout</a>
+        </form>
+    </nav>
+
+    <div id="intro" class="bg-image shadow-2-strong">
+        <div class="container mt-5" id="margin">
+            <div class="row">
+                <!-- Your Events Row -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            Your Events
+                        </div>
+                        <div class="card-body">
+                            {% if user.posts[0].id == None %}
+                                <p>No Events created yet!</p>
+                            {% else %}
+                                {% for post in user.posts %}
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <p>{{ post.event_name }} by {{ user.first_name }}</p>
+                                            <p>{{ post.location }}</p>
+                                            <p>{{ post.description }}</p>
+                                            <p>{{ post.date_time }}</p>
+                                            <p>Likes: {{ post.likes }}</p>
+                                            <a href="/post/{{ post.id }}" class="btn btn-primary">View</a>
+                                            <a href="/comments/{{ post.id }}" class="btn btn-primary">Comments</a>
+                                            <a href="/post/edit/{{ post.id }}" class="btn btn-primary">Edit</a>
+                                            <a href="/post/delete/{{ post.id }}" class="btn btn-primary">Delete</a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Similar Events Row -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            Similar Events Near You
+                        </div>
+                        <div class="card-body">
+                            {% for post in posts %}
+                                {% if post.creator.id != user.id %}
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <p>{{ post.event_name }} by {{ post.creator.first_name }}</p>
+                                            <p>{{ post.location }}</p>
+                                            <p>{{ post.description }}</p>
+                                            <p>{{ post.date_time }}</p>
+                                            <p>Likes: {{ post.likes }}</p>
+                                            <a href="/join/{{ post.id }}" class="btn btn-success">Join Event</a>
+                                            <a href="/leave/{{ post.id }}/False" class="btn btn-danger">Leave</a>
+                                            <a href="/post/{{ post.id }}" class="btn btn-primary">View</a>
+                                            <a href="/like/{{ post.id }}" class="btn btn-primary">Like</a>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <a href="/rsvps/{{ user.id }}" class="btn btn-secondary mt-3">RSVP'd Events</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
